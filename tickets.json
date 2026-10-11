@@ -28,5 +28,75 @@
         "priority": "critical",
         "status": "open",
         "assigned_to": "John"
+    },
+    {
+        "id": "F-CE6B79",
+        "title": "school",
+        "category": "Other",
+        "urgency": "high",
+        "affected_users": 15,
+        "priority": "critical",
+        "status": "open",
+        "assigned_to": "None"
+    },
+    {
+        "id": "F-9D884D",
+        "title": "school",
+        "category": "Other",
+        "urgency": "high",
+        "affected_users": 15,
+        "priority": "critical",
+        "status": "open",
+        "assigned_to": "None"
+    },
+    {
+        "id": "F-89F951",
+        "title": "school",
+        "category": "Other",
+        "urgency": "high",
+        "affected_users": 15,
+        "priority": "critical",
+        "status": "open",
+        "assigned_to": "None"
+    },
+    {
+        "id": "F-E17BFA",
+        "title": "school",
+        "category": "Other",
+        "urgency": "high",
+        "affected_users": 15,
+        "priority": "critical",
+        "status": "open",
+        "assigned_to": "None"
+    },
+    {
+        "id": "F-8AD6C2",
+        "title": "school",
+        "category": "Other",
+        "urgency": "high",
+        "affected_users": 15,
+        "priority": "critical",
+        "status": "open",
+        "assigned_to": "None"
+    },
+    {
+        "id": "F-1AE620",
+        "title": "school",
+        "category": "Other",
+        "urgency": "high",
+        "affected_users": 15,
+        "priority": "critical",
+        "status": "open",
+        "assigned_to": "None"
+    },
+    {
+        "id": "T001",
+        "title": "Test ticket",
+        "category": "Other",
+        "urgency": "low",
+        "affected_users": 1,
+        "priority": "low",
+        "status": "open",
+        "assigned_to": "Ada"
     }
 ]

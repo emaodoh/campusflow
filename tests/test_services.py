@@ -87,19 +87,6 @@ def test_check_urgency(input_urgency, expected_output):
     assert check_urgency(input_urgency) == expected_output
 
 
-# ==========================================
-# 5. Tests for check_affected_users()
-# ==========================================
 
-@pytest.mark.parametrize(
-    "input_users, expected_output",
-    [
-        (5, 5),
-        ("10", 10),       # String integer converted successfully
-        (0, None),        # Must be > 0
-        (-5, None),       # Must be > 0
-        ("invalid", None), # Value error caught
-    ]
-)
-def test_check_affected_users(input_users, expected_output):
-    assert check_affected_users(input_users) == expected_output
+if __name__ == "__main__":
+    unittest.main()

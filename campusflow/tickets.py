@@ -17,7 +17,7 @@ def create_ticket(title, category, urgency, affected_users, status="Open", assig
     if not urgency:
         return "urgency provided is not allowed\naccepted options: low, medium, high"
 
-    affected_user = check_affected_users(affected_users)
+    affected_users = check_affected_users(affected_users)
 
 
     if not affected_users:
@@ -30,7 +30,7 @@ def create_ticket(title, category, urgency, affected_users, status="Open", assig
         "title": title,
         "category": category,
         "urgency": urgency,
-        "affected_users":affected_user,
+        "affected_users":affected_users,
         "priority": priority_level,
         "status": status,
         "assigned_to": assigned_to,

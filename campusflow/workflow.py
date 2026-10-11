@@ -76,5 +76,7 @@ def get_queue(tickets):
     open_tickets = [t for t in tickets if t["status"] == "open"]
     return sorted(
         open_tickets,
-        key=lambda t: (PRIORITY_ORDER[t["priority"]], int(t["id"][1:])),
-    )
+key=lambda t: (
+    PRIORITY_ORDER[t["priority"]], 
+    int(''.join(filter(str.isdigit, t["id"]))) if any(c.isdigit() for c in t["id"]) else 0
+),    )

@@ -9,3 +9,8 @@ def test_ticket_creation():
 
     # testing for empty input fileds
     assert create_ticket(title="school", category="other", urgency="", affected_users="12", status="", assigned_to="None") != None
+
+
+
+if __name__ == "__main__":
+    unittest.main()
