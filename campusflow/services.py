@@ -43,7 +43,7 @@ def check_urgency(urgency):
 def check_affected_users(affected_users):
     try:
         affected_users = int(affected_users)
-        if affected_users > 0:
+        if affected_users >= 0:
             return affected_users
 
     except ValueError:

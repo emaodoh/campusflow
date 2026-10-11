@@ -1,5 +1,7 @@
 """Assignment, status workflow and work queue (Engineer B)."""
 
+from .storage import save, load
+
 # Allowed moves: current status -> list of statuses it may move to.
 VALID_TRANSITIONS = {
     "open": ["in_progress"],
@@ -11,7 +13,7 @@ VALID_TRANSITIONS = {
 PRIORITY_ORDER = {"critical": 0, "high": 1, "medium": 2, "low": 3}
 
 
-def _find_ticket(tickets, ticket_id):
+def find_ticket(tickets, ticket_id):
     """Return the ticket dict with this ID, or raise ValueError."""
     ticket_id = str(ticket_id).strip().upper()
     for ticket in tickets:
@@ -27,14 +29,22 @@ def assign_ticket(tickets, ticket_id, staff_name):
     if name == "":
         raise ValueError("Staff name cannot be blank")
 
-    ticket = _find_ticket(tickets, ticket_id)
+    ticket = find_ticket(tickets, ticket_id)
 
     if ticket["status"] == "resolved":
         raise ValueError(
             f"Ticket {ticket['id']} is resolved; reopen it before assigning"
         )
+    ticket_list = load()
 
     ticket["assigned_to"] = name
+
+
+    ticket_list = [ticket for ticket in ticket_list if ticket["id"] != ticket_id]
+    
+    ticket_list.append(ticket)
+    save(ticket_list)
+
     return ticket
 
 
@@ -44,7 +54,7 @@ def change_status(tickets, ticket_id, new_status):
     if new_status not in VALID_TRANSITIONS:
         raise ValueError(f"Unknown status: {new_status}")
 
-    ticket = _find_ticket(tickets, ticket_id)
+    ticket = find_ticket(tickets, ticket_id)
     current = ticket["status"]
 
     if new_status not in VALID_TRANSITIONS[current]:
