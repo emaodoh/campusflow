@@ -1,4 +1,7 @@
 """Reporting (Engineer B)."""
+from .storage import load
+
+
 
 STATUSES = ["open", "in_progress", "resolved"]
 PRIORITIES = ["critical", "high", "medium", "low"]
