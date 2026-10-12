@@ -1,5 +1,4 @@
 """Reporting (Engineer B)."""
-from .storage import load
 
 
 
@@ -21,7 +20,8 @@ def build_report(tickets):
         by_priority[ticket["priority"]] += 1
 
     return {
-        "total": len(tickets),
+        "total": len(tickets),                                                                                                                                                                                                          
         "by_status": by_status,
         "by_priority": by_priority,
     }
+print(build_report([{"status": "open", "priority": "high"}]))
