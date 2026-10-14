@@ -1,12 +1,13 @@
 """Reporting (Engineer B)."""
-
+from .storage import load
 
 
 STATUSES = ["open", "in_progress", "resolved"]
 PRIORITIES = ["critical", "high", "medium", "low"]
 
 
-def build_report(tickets):
+def build_report():
+    tickets = load()
     """Return totals and counts by status and priority.
 
     Every status and priority is included, with 0 when there are none,
@@ -24,4 +25,3 @@ def build_report(tickets):
         "by_status": by_status,
         "by_priority": by_priority,
     }
-print(build_report([{"status": "open", "priority": "high"}]))
