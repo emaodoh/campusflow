@@ -41,3 +41,5 @@ def create_ticket(title, category, urgency, affected_users, status="Open", assig
 
     save(tickets)
 
+    return "Ticket created successfully!"
+

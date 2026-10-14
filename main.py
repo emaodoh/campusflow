@@ -1,12 +1,12 @@
-from campusflow import storage, tickets, workflow, reports
+from campusflow import tickets_creation, workflow, reports
 
 # Load initial data (if needed globally, though you reload in operations 5 & 6)
-ticket_list = storage.load()
+
 
 def main():
     while True:
         # 1. Print Menu inside the loop so it reappears after an operation completes
-        print("\n1. Create Ticket\n2. List/View\n3. Assign\n4. Workflow\n5. Work Queue\n6. Reports\n7. Exit")
+        print("\n1. Create Ticket\n2. List/View\n3. Assign\n4. Change status\n5. Work Queue\n6. Reports\n7. Exit")
         operation = input("Enter operation number: ").strip()
 
         # 2. Validate input safely
@@ -26,31 +26,41 @@ def main():
             urgency = input("Urgency: ")
             affected_users = input("Affected Users: ")
             # Uses the imported 'tickets' module
-            print(tickets.create_ticket(title, category, urgency, affected_users, status="Open", assigned_to="None"))
+            print(tickets_creation.create_ticket(title, category, urgency, affected_users, status="Open", assigned_to="None"))
 
         elif operation == 2:
             ticket_id = input("Enter ticket ID: ").strip()
-            print(workflow.find_ticket(ticket_list, ticket_id))
+            ticket = workflow.find_ticket(ticket_id)
+
+            print(f"\nID: {ticket["id"]}\nTitle: {ticket["title"]}\nCategory: {ticket["category"]}\nUrgency: {ticket["urgency"]}\nAffected Users:  {ticket["affected_users"]}\nPriority: {ticket["priority"]}\nStatus: {ticket["status"]}\nAssigned to: {ticket["assigned_to"]}")
 
         elif operation == 3:
             ticket_id = input("Enter ticket ID: ").strip()
             staff_name = input("Enter staff name: ").strip()
-            print(workflow.assign_ticket(ticket_list, ticket_id, staff_name))
+            print(workflow.assign_ticket( ticket_id, staff_name))
         
         elif operation == 4:
-            print("Workflow option selected (Not yet implemented).")
-            pass
+            ticket_id = input("Enter ticket id: ").lower()
+            ticket_status = input("Enter ticket status: ").lower()
+        
+            print(workflow.change_status(ticket_id, ticket_status))
+            
 
         elif operation == 5:
             
-            loaded_tickets = storage.load()
-            print(workflow.get_queue(loaded_tickets))
+            tickets = workflow.get_queue()
+
+            for ticket in tickets:
+                print(f"Ticket_ID: {ticket["id"]} <  Title: {ticket["title"]} >   < Category: {ticket["category"]}  >   < Affected Users: {ticket["affected_users"]} >  <  Priority: {ticket["priority"]}  > ")
+
+
 
         elif operation == 6:
         
-            loaded_tickets = storage.load()
-            report = reports.build_report(loaded_tickets)
-            print(report)
+            
+            report = reports.build_report()
+            print(f"\nTotal ticket: {report["total"]}\nTickets Open: {report["by_status"]["open"]}\nTickets in progress: {report["by_status"]["in_progress"]}\nTickets resolved: {report["by_status"]["resolved"]}\n")
+            print(f"Priority:  << Critical: {report["by_priority"]["critical"]} >>   << High: {report["by_priority"]["high"]} >>   << Medium: {report["by_priority"]["medium"]} >>  << Low: {report["by_priority"]["low"]}  >>")
 
         elif operation == 7:
             print("Exiting CampusFlow. Goodbye!")

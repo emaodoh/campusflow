@@ -6,14 +6,16 @@ from .storage import save, load
 VALID_TRANSITIONS = {
     "open": ["in_progress"],
     "in_progress": ["resolved"],
-    "resolved": ["open"],  # reopen
+    "resolved": ["open"],
+    "reopen": ["reopen"],  # reopen
 }
 
 # Lower number = more urgent.
 PRIORITY_ORDER = {"critical": 0, "high": 1, "medium": 2, "low": 3}
 
 
-def find_ticket(tickets, ticket_id):
+def find_ticket(ticket_id):
+    tickets = load()
     """Return the ticket dict with this ID, or raise ValueError."""
     ticket_id = str(ticket_id).strip().upper()
     for ticket in tickets:
@@ -22,61 +24,90 @@ def find_ticket(tickets, ticket_id):
     raise ValueError(f"Ticket {ticket_id} not found")
 
 
-def assign_ticket(tickets, ticket_id, staff_name):
+def assign_ticket( ticket_id, staff_name):
     """Assign a ticket to a staff member and return the updated ticket."""
+    ticket_list = load()
+
     # Check everything first, change data last.
     name = str(staff_name).strip()
     if name == "":
         raise ValueError("Staff name cannot be blank")
 
-    ticket = find_ticket(tickets, ticket_id)
+    ticket = find_ticket(ticket_id)
 
     if ticket["status"] == "resolved":
         raise ValueError(
             f"Ticket {ticket['id']} is resolved; reopen it before assigning"
         )
-    ticket_list = load()
+    if not ticket["assigned_to"] or ticket["assigned_to"] == "None":
+        ticket["assigned_to"] = name
+    else:
+        raise ValueError(
+            f"Ticket {ticket['id']} is assigned to {ticket["assigned_to"]}"
+        )
 
-    ticket["assigned_to"] = name
 
-
-    ticket_list = [ticket for ticket in ticket_list if ticket["id"] != ticket_id]
+    ticket_list = [t for t in ticket_list if t["id"] != ticket_id]
+    ticket["status"] = "in_progress"
     
     ticket_list.append(ticket)
     save(ticket_list)
 
     return ticket
 
+VALID_TRANSITIONS = {
+    "open": ["in_progress"],
+    "in_progress": ["resolved"],
+    "resolved": ["open"],
+    "reopen": ["reopen"],  # reopen
+}
 
-def change_status(tickets, ticket_id, new_status):
+def change_status(ticket_id, new_status):
     """Move a ticket to a new status and return the updated ticket."""
     new_status = str(new_status).strip().lower()
+    
+    # 1. Always fetch fresh data to avoid sync issues
+    ticket_list = load()
+    ticket = find_ticket(ticket_id)
+    current = ticket["status"].lower()
+
+    # 2. Check if the target status is even a real state
     if new_status not in VALID_TRANSITIONS:
-        raise ValueError(f"Unknown status: {new_status}")
+        raise ValueError(f"Unknown status: '{new_status}'")
 
-    ticket = find_ticket(tickets, ticket_id)
-    current = ticket["status"]
-
+    # 3. Guard: Enforce strict step-by-step lifecycle paths
     if new_status not in VALID_TRANSITIONS[current]:
         raise ValueError(
-            f"Cannot move ticket {ticket['id']} from {current} to {new_status}"
+            f"Invalid transition: Cannot move ticket {ticket['id']} from '{current}' to '{new_status}'"
         )
 
-    if new_status == "in_progress" and not ticket["assigned_to"]:
+    # 4. Guard: Cannot manually move to in_progress without an assignee
+    if new_status == "in_progress" and not ticket.get("assigned_to"):
         raise ValueError(
-            f"Ticket {ticket['id']} must be assigned before it can be in_progress"
+            f"Ticket {ticket['id']} must be assigned to a staff member before it can be 'in_progress'"
         )
 
+    # 5. Rule: If a ticket is being reopened (resolved -> open), clear the assignee
+    if current == "resolved" and new_status == "open":
+        ticket["assigned_to"] = None
+
+    # 6. Apply status change and save safely
     ticket["status"] = new_status
+    
+    updated_list = [t for t in ticket_list if t["id"] != ticket["id"]]
+    updated_list.append(ticket)
+    save(updated_list)
+
     return ticket
 
 
-def get_queue(tickets):
+def get_queue():
+    tickets = load()
     """Return open tickets sorted by priority, then by numeric ID."""
-    open_tickets = [t for t in tickets if t["status"] == "open"]
+    # Map priorities to a numeric order (lower number = higher priority)
+    priority_order = {"critical": 0, "high": 1, "medium": 2, "low": 3}
+    
     return sorted(
-        open_tickets,
-key=lambda t: (
-    PRIORITY_ORDER[t["priority"]], 
-    int(''.join(filter(str.isdigit, t["id"]))) if any(c.isdigit() for c in t["id"]) else 0
-),    )
+        [t for t in tickets if t["status"] == "open"],
+        key=lambda t: (priority_order.get(t["priority"].lower(), 4), t["id"])
+    )
