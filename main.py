@@ -26,25 +26,41 @@ def main():
             urgency = input("Urgency: ")
             affected_users = input("Affected Users: ")
             # Uses the imported 'tickets' module
+            
             print(tickets_creation.create_ticket(title, category, urgency, affected_users, status="Open", assigned_to="None"))
 
         elif operation == 2:
             ticket_id = input("Enter ticket ID: ").strip()
-            ticket = workflow.find_ticket(ticket_id)
 
-            print(f"\nID: {ticket["id"]}\nTitle: {ticket["title"]}\nCategory: {ticket["category"]}\nUrgency: {ticket["urgency"]}\nAffected Users:  {ticket["affected_users"]}\nPriority: {ticket["priority"]}\nStatus: {ticket["status"]}\nAssigned to: {ticket["assigned_to"]}")
+            try:
+                ticket = workflow.find_ticket(ticket_id)
+                print(f"\nID: {ticket["id"]}\nTitle: {ticket["title"]}\nCategory: {ticket["category"]}\nUrgency: {ticket["urgency"]}\nAffected Users:  {ticket["affected_users"]}\nPriority: {ticket["priority"]}\nStatus: {ticket["status"]}\nAssigned to: {ticket["assigned_to"]}")
+
+            except ValueError as error:
+                print(f"\nError: {error}")
+
+            
+
 
         elif operation == 3:
             ticket_id = input("Enter ticket ID: ").strip()
             staff_name = input("Enter staff name: ").strip()
-            print(workflow.assign_ticket( ticket_id, staff_name))
-        
+            try:
+                result = workflow.assign_ticket( ticket_id, staff_name)
+                print(result)
+
+            except ValueError as error:
+                print(f"Error: {error}")
+
         elif operation == 4:
             ticket_id = input("Enter ticket id: ").lower()
             ticket_status = input("Enter ticket status: ").lower()
-        
-            print(workflow.change_status(ticket_id, ticket_status))
+            try:
+                result = workflow.change_status(ticket_id, ticket_status)
+                print(result)
             
+            except ValueError as error:
+                print(f"\nError: {error}")
 
         elif operation == 5:
             

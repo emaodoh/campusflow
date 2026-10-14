@@ -70,16 +70,6 @@
         "assigned_to": null
     },
     {
-        "id": "F-1AE620",
-        "title": "school",
-        "category": "Other",
-        "urgency": "high",
-        "affected_users": 15,
-        "priority": "critical",
-        "status": "open",
-        "assigned_to": null
-    },
-    {
         "id": "F001",
         "title": "campus",
         "category": "Other",
@@ -98,6 +88,15 @@
         "priority": "low",
         "status": "open",
         "assigned_to": null
+    },
+    {
+        "id": "F-1AE620",
+        "title": "school",
+        "category": "Other",
+        "urgency": "high",
+        "affected_users": 15,
+        "priority": "critical",
+        "status": "open",
+        "assigned_to": null
     }
-
 ]
