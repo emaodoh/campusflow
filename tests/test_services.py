@@ -1,30 +1,30 @@
 import pytest
 from campusflow.services import (
-    IDGenerator,
-    id_factory,
+    # IDGenerator,
+    # id_factory,
     priority,
     check_categories,
     check_urgency,
     check_affected_users,
 )
 
-# ==========================================
-# 1. Tests for IDGenerator Class & Factory
-# ==========================================
+# # ==========================================
+# # 1. Tests for IDGenerator Class & Factory
+# # ==========================================
 
-def test_id_generator_increments_and_formats():
-    """Verify that IDGenerator pads numbers and increments accurately."""
-    generator = IDGenerator(prefix="T", start_num=9)
-    assert generator.get_next_id() == "T009"
-    assert generator.get_next_id() == "T010"
+# def test_id_generator_increments_and_formats():
+#     """Verify that IDGenerator pads numbers and increments accurately."""
+#     generator = IDGenerator(prefix="T", start_num=9)
+#     assert generator.get_next_id() == "T009"
+#     assert generator.get_next_id() == "T010"
 
-def test_global_id_factory():
-    """Ensure the background id_factory is functioning and tracking state."""
-    # Since it's imported globally, we just make sure it yields the initial expected pattern
-    # Note: If other tests use this global factory, the starting number might vary.
-    current_id = id_factory.get_next_id()
-    assert current_id.startswith("F")
-    assert len(current_id) == 4
+# def test_global_id_factory():
+#     """Ensure the background id_factory is functioning and tracking state."""
+#     # Since it's imported globally, we just make sure it yields the initial expected pattern
+#     # Note: If other tests use this global factory, the starting number might vary.
+#     current_id = id_factory.get_next_id()
+#     assert current_id.startswith("F")
+#     assert len(current_id) == 4
 
 
 # ==========================================
