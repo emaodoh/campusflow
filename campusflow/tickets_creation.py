@@ -1,8 +1,11 @@
-from .services import  priority, check_categories, check_urgency, check_affected_users, generate_ticket_id
+from .services import  priority, check_categories, check_urgency, check_affected_users, generate_ticket_id, generate_note_id
 from .storage import load_ticket, save_ticket
+from .validate import validate_note_entry
 
 
-def create_ticket(title, category, urgency, affected_users, status="Open", assigned_to="None"):
+def create_ticket(title, category, urgency, affected_users, author, message):
+    status = "Open"
+    assigned_to = "None"
     
     tickets = load_ticket()
     if not title.strip():
@@ -26,6 +29,21 @@ def create_ticket(title, category, urgency, affected_users, status="Open", assig
     priority_level = priority(urgency, affected_users)
 
     ticket_id = generate_ticket_id()
+
+    note_id = generate_note_id()
+
+    try:
+        e = validate_note_entry(author, message)
+    except ValueError:
+        print(f"\nWarning: Note was not added because author or message cannot be empty. \n")
+
+    
+
+    if not author and not message:
+        note_id = ""
+    
+        
+
     ticket_data = {
         "id": ticket_id,
         "title": title,
@@ -37,9 +55,9 @@ def create_ticket(title, category, urgency, affected_users, status="Open", assig
         "assigned_to": assigned_to,
         "notes": [
             {
-                "note_id": "",
-                "author": "",
-                "message": ""
+                "note_id": note_id,
+                "author": author,
+                "message": message
             }
         ]
     }
