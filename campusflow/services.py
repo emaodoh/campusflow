@@ -1,17 +1,45 @@
-class IDGenerator:
-    def __init__(self, prefix: str = "F", start_num: int = 1):
-        self.prefix = prefix
-        self.counter = start_num
+from .storage import load_ticket
 
-    def get_next_id(self) -> str:
-        self.generated_id = f"{self.prefix}{self.counter:03d}"
-        self.counter += 1
-        return self.generated_id
+def generate_ticket_id(prefix="F"):
+    tickets = load_ticket()
 
-# --- 2. GLOBAL SYSTEM INITIALIZATION ---
-# This runs ONCE when the script starts. It lives in the background.
-id_factory = IDGenerator(prefix="F", start_num=1)
+    if not tickets:
+        return f"{prefix}001"
 
+    existing_ids = []
+    for ticket in tickets:
+        id_str = ticket.get("id", "")
+        if id_str.startswith(prefix):
+            num_part = int(id_str.replace(prefix, ""))
+            existing_ids.append(num_part)
+
+        
+    next_num = max(existing_ids) + 1 if existing_ids else 1
+
+    return f"{prefix}{next_num:03d}"
+
+
+def generate_note_id(prefix="T"):
+    tickets = load_ticket()
+
+    if not tickets:
+        return f"{prefix}001"
+
+    existing_ids = []
+
+    for ticket in tickets:
+        notes = ticket.get("notes", [])
+
+        for note in notes:
+            note_id = note.get("note_id", "")
+
+            if note_id.startswith(prefix):
+                num_part = int(note_id.replace(prefix, ""))
+                existing_ids.append(num_part)
+
+    next_num = max(existing_ids) + 1 if existing_ids else 1
+
+    return f"{prefix}{next_num:03d}"
 
 
 def priority(urgency, affected_users):

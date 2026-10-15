@@ -1,10 +1,10 @@
-from .services import  priority, check_categories, check_urgency, check_affected_users
-from .storage import load, save
-import uuid
+from .services import  priority, check_categories, check_urgency, check_affected_users, generate_ticket_id
+from .storage import load_ticket, save_ticket
+
 
 def create_ticket(title, category, urgency, affected_users, status="Open", assigned_to="None"):
     
-    tickets = load()
+    tickets = load_ticket()
     if not title.strip():
         return "Title must not be blank."
 
@@ -25,8 +25,9 @@ def create_ticket(title, category, urgency, affected_users, status="Open", assig
 
     priority_level = priority(urgency, affected_users)
 
+    ticket_id = generate_ticket_id()
     ticket_data = {
-        "id": f"F-{uuid.uuid4().hex[:6].upper()}",
+        "id": ticket_id,
         "title": title,
         "category": category,
         "urgency": urgency,
@@ -34,12 +35,20 @@ def create_ticket(title, category, urgency, affected_users, status="Open", assig
         "priority": priority_level,
         "status": status,
         "assigned_to": assigned_to,
+        "notes": [
+            {
+                "note_id": "",
+                "author": "",
+                "message": ""
+            }
+        ]
     }
+    
 
 
     tickets.append(ticket_data)
 
-    save(tickets)
+    save_ticket(tickets)
 
     return "Ticket created successfully!"
 

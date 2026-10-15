@@ -1,6 +1,6 @@
 """Assignment, status workflow and work queue (Engineer B)."""
 
-from .storage import save, load
+from .storage import save_ticket, load_ticket
 
 # Allowed moves: current status -> list of statuses it may move to.
 VALID_TRANSITIONS = {
@@ -15,7 +15,7 @@ PRIORITY_ORDER = {"critical": 0, "high": 1, "medium": 2, "low": 3}
 
 
 def find_ticket(ticket_id):
-    tickets = load()
+    tickets = load_ticket()
     """Return the ticket dict with this ID, or raise ValueError."""
     ticket_id = str(ticket_id).strip().upper()
     for ticket in tickets:
@@ -26,7 +26,7 @@ def find_ticket(ticket_id):
 
 def assign_ticket( ticket_id, staff_name):
     """Assign a ticket to a staff member and return the updated ticket."""
-    ticket_list = load()
+    ticket_list = load_ticket()
 
     # Check everything first, change data last.
     name = str(staff_name).strip()
@@ -51,7 +51,7 @@ def assign_ticket( ticket_id, staff_name):
     ticket["status"] = "in_progress"
     
     ticket_list.append(ticket)
-    save(ticket_list)
+    save_ticket(ticket_list)
 
     return ticket
 
@@ -67,7 +67,7 @@ def change_status(ticket_id, new_status):
     new_status = str(new_status).strip().lower()
     
     # 1. Always fetch fresh data to avoid sync issues
-    ticket_list = load()
+    ticket_list = load_ticket()
     ticket = find_ticket(ticket_id)
     current = ticket["status"].lower()
 
@@ -91,18 +91,18 @@ def change_status(ticket_id, new_status):
     if current == "resolved" and new_status == "open":
         ticket["assigned_to"] = None
 
-    # 6. Apply status change and save safely
+    # 6. Apply status change and save_ticket safely
     ticket["status"] = new_status
     
     updated_list = [t for t in ticket_list if t["id"] != ticket["id"]]
     updated_list.append(ticket)
-    save(updated_list)
+    save_ticket(updated_list)
 
     return ticket
 
 
 def get_queue():
-    tickets = load()
+    tickets = load_ticket()
     """Return open tickets sorted by priority, then by numeric ID."""
     # Map priorities to a numeric order (lower number = higher priority)
     priority_order = {"critical": 0, "high": 1, "medium": 2, "low": 3}
