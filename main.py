@@ -1,4 +1,4 @@
-from campusflow import tickets_creation, workflow, reports, notes, search_engine
+from campusflow import tickets_creation, workflow, reports, notes, search_engine, quiz
 
 # Load initial data (if needed globally, though you reload in operations 5 & 6)
 
@@ -6,13 +6,13 @@ from campusflow import tickets_creation, workflow, reports, notes, search_engine
 def main():
     while True:
         # 1. Print Menu inside the loop so it reappears after an operation completes
-        print("\n1. Create Ticket\n2. List/View\n3. Assign\n4. Change status\n5. Work Queue\n6. Reports\n7. Notes\n8. Search/Filter\n9. Exit")
+        print("\n1. Create Ticket\n2. List/View\n3. Assign\n4. Change status\n5. Work Queue\n6. Reports\n7. Notes\n8. Search/Filter\n9. Quiz\n10. Exit")
         operation = input("Enter operation number: ").strip()
 
         # 2. Validate input safely
         try:
             operation = int(operation)
-            if not (1 <= operation <= 8):
+            if not (1 <= operation <= 10):
                 print("\nPlease enter a number between 1 - 7")
                 continue
         except ValueError:
@@ -25,9 +25,28 @@ def main():
             category = input("Enter category (Network, Hardware, Software or Other): ")
             urgency = input("Urgency: (low, medium or high)")
             affected_users = input("Affected Users: ")
+            
+            while True:
+
+                note = input("Leave a note (y/n): ").lower().strip()
+            
+                if note == "y" or note == "n":
+                    break
+
+                print("Enter 'Y' to leave a note and 'N' to skip: ")
+
+            author = ""
+            message = ""
+
+            if note == "y":
+                
+            
+                author = input("Enter your name: ").strip()
+                message = input("Enter a short note:  ")
+
             # Uses the imported 'tickets' module
             
-            print(tickets_creation.create_ticket(title, category, urgency, affected_users, status="Open", assigned_to="None"))
+            print(tickets_creation.create_ticket(title, category, urgency, affected_users, author, message ))
 
         elif operation == 2:
             ticket_id = input("Enter ticket ID: ").strip()
@@ -124,31 +143,75 @@ def main():
             
         
         elif operation == 8:
-            
-            category = input("Enter category (Network, Hardware, Software or Other): ").strip().lower()
-            priority = input("Priority: (low, medium, high or critical):  ").strip().lower()
-            status = input("Status: (open, in_progress, resolved):  ").strip().lower()
-                
-            found = search_engine.search(category, status, priority)
-        
-            if found:
-                    
-                for ticket in found:
-                    print(
-                        f"Ticket Found\n"
-                        f"ID: {ticket['id']}\n"
-                        f"Title: {ticket['title']}\n"
-                        f"Category: {ticket['category']}\n"
-                        f"Urgency: {ticket['urgency']}\n"
-                        f"Affected Users: {ticket['affected_users']}\n"
-                        f"Priority: {ticket['priority']}\n"
-                        f"Status: {ticket['status']}\n"
-                        f"Assigned To: {ticket['assigned_to']}"
-                    )
-            else:
-                print("\nNo tickets matched this search.")
+            while True:
+                try:
+                    print(f"1. search by title\n2. search by category, status and priority")
 
-        elif operation == 8:
+                    response = int(input(" ").strip())
+                
+                    
+
+                    if response > 0 and response <= 2:
+                        break
+                    else:
+                        print("Enter between 1 and 2")
+
+                except ValueError:
+                    print("Enter a valid number")
+                
+            if response == 1:
+                title = input("Enter title:  ").strip().lower()
+
+                found = search_engine.search_title(title)
+
+                if found:
+                            
+                    for ticket in found:
+                        print(
+                            f"\nTicket Found\n"
+                            f"ID: {ticket['id']}\n"
+                            f"Title: {ticket['title']}\n"
+                            f"Category: {ticket['category']}\n"
+                            f"Urgency: {ticket['urgency']}\n"
+                            f"Affected Users: {ticket['affected_users']}\n"
+                            f"Priority: {ticket['priority']}\n"
+                            f"Status: {ticket['status']}\n"
+                            f"Assigned To: {ticket['assigned_to']}"
+                        )
+                else:
+                    print("\nNo tickets matched this search.")
+
+
+            if response == 2:       
+                category = input("Enter category (Network, Hardware, Software or Other): ").strip().lower()
+                priority = input("Priority: (low, medium, high or critical):  ").strip().lower()
+                status = input("Status: (open, in_progress, resolved):  ").strip().lower()
+                        
+                found = search_engine.search( category, status, priority)
+                
+                if found:
+                            
+                    for ticket in found:
+                        print(
+                            f"Ticket Found\n"
+                            f"ID: {ticket['id']}\n"
+                            f"Title: {ticket['title']}\n"
+                            f"Category: {ticket['category']}\n"
+                            f"Urgency: {ticket['urgency']}\n"
+                            f"Affected Users: {ticket['affected_users']}\n"
+                            f"Priority: {ticket['priority']}\n"
+                            f"Status: {ticket['status']}\n"
+                            f"Assigned To: {ticket['assigned_to']}"
+                        )
+                else:
+                    print("\nNo tickets matched this search.")
+
+        elif operation == 9:
+            score = quiz.quiz()
+            print(f"\nScore: {score}")
+
+
+        elif operation == 10:
             print("Exiting CampusFlow. Goodbye!")
             break  # Successfully breaks the main loop and exits the program
 
