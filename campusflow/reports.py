@@ -1,13 +1,15 @@
 """Reporting (Engineer B)."""
-from .storage import load
+from .storage import load_ticket
 
 
-STATUSES = ["open", "in_progress", "resolved"]
+STATUSES = ["open", "in_progress", "resolved","Open", "In_progress", "Resolved"]
 PRIORITIES = ["critical", "high", "medium", "low"]
 
 
 def build_report():
-    tickets = load()
+    tickets = load_ticket()
+    if len(tickets) == 0:
+        raise ValueError("No ticket recorded")
     """Return totals and counts by status and priority.
 
     Every status and priority is included, with 0 when there are none,

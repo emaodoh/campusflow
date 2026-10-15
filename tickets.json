@@ -1,102 +1,87 @@
 [
     {
-        "id": "F-B8B060",
-        "title": "school",
-        "category": "Other",
-        "urgency": "low",
-        "affected_users": 12,
-        "priority": "medium",
-        "status": "open",
-        "assigned_to": "None"
-    },
-    {
-        "id": "F-DD9648",
-        "title": "school",
-        "category": "Other",
-        "urgency": "low",
-        "affected_users": 12,
-        "priority": "high",
-        "status": "open",
-        "assigned_to": "None"
-    },
-    {
-        "id": "F-CE6B79",
-        "title": "school",
-        "category": "Other",
-        "urgency": "high",
-        "affected_users": 15,
-        "priority": "low",
-        "status": "open",
-        "assigned_to": "None"
-    },
-    {
-        "id": "F-9D884D",
-        "title": "school",
-        "category": "Other",
-        "urgency": "high",
-        "affected_users": 15,
-        "priority": "critical",
-        "status": "open",
-        "assigned_to": "None"
-    },
-    {
-        "id": "F-89F951",
-        "title": "school",
-        "category": "Other",
-        "urgency": "high",
-        "affected_users": 15,
-        "priority": "critical",
-        "status": "open",
-        "assigned_to": "None"
-    },
-    {
-        "id": "F-E17BFA",
-        "title": "school",
-        "category": "Other",
-        "urgency": "high",
-        "affected_users": 15,
-        "priority": "critical",
-        "status": "open",
-        "assigned_to": null
-    },
-    {
-        "id": "F-8AD6C2",
-        "title": "school",
-        "category": "Other",
-        "urgency": "high",
-        "affected_users": 15,
-        "priority": "critical",
-        "status": "open",
-        "assigned_to": null
-    },
-    {
         "id": "F001",
-        "title": "campus",
-        "category": "Other",
+        "title": "Campus WiFi connection failure",
+        "category": "Network",
         "urgency": "high",
         "affected_users": 150,
         "priority": "critical",
         "status": "in_progress",
-        "assigned_to": "james"
+        "assigned_to": "james",
+        "notes": [
+            {
+                "note_id": "T001",
+                "author": "emmanuel",
+                "message": "Investigating the network issue affecting students."
+            }
+        ]
     },
     {
-        "id": "T001",
-        "title": "Test ticket",
-        "category": "Other",
-        "urgency": "low",
-        "affected_users": 1,
-        "priority": "low",
+        "id": "F002",
+        "title": "Student portal login error",
+        "category": "Software",
+        "urgency": "medium",
+        "affected_users": 80,
+        "priority": "high",
         "status": "open",
-        "assigned_to": null
+        "assigned_to": "sarah",
+        "notes": [
+            {
+                "note_id": "T002",
+                "author": "sarah",
+                "message": "Reported users are unable to access their accounts."
+            }
+        ]
     },
     {
-        "id": "F-1AE620",
-        "title": "school",
+        "id": "F003",
+        "title": "Projector not working in lecture hall",
+        "category": "Hardware",
+        "urgency": "low",
+        "affected_users": 40,
+        "priority": "medium",
+        "status": "resolved",
+        "assigned_to": "michael",
+        "notes": [
+            {
+                "note_id": "T003",
+                "author": "michael",
+                "message": "Projector cable was replaced and tested successfully."
+            }
+        ]
+    },
+    {
+        "id": "F004",
+        "title": "Payment system transaction failure",
         "category": "Other",
         "urgency": "high",
-        "affected_users": 15,
+        "affected_users": 300,
         "priority": "critical",
+        "status": "in_progress",
+        "assigned_to": "david",
+        "notes": [
+            {
+                "note_id": "T004",
+                "author": "david",
+                "message": "Checking payment gateway logs for failed transactions."
+            }
+        ]
+    },
+    {
+        "id": "F005",
+        "title": "Update student profile information feature",
+        "category": "Other",
+        "urgency": "low",
+        "affected_users": 500,
+        "priority": "low",
         "status": "open",
-        "assigned_to": null
+        "assigned_to": "emmanuel",
+        "notes": [
+            {
+                "note_id": "T005",
+                "author": "emmanuel",
+                "message": "Feature request has been documented for future development."
+            }
+        ]
     }
 ]
