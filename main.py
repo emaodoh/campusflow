@@ -207,8 +207,11 @@ def main():
                     print("\nNo tickets matched this search.")
 
         elif operation == 9:
-            score = quiz.quiz()
-            print(f"\nScore: {score}")
+            try:
+                score = quiz.quiz()
+                print(f"\nScore: {score}")
+            except ValueError as error:
+                print(f"\nError: {error}\n")
 
 
         elif operation == 10:

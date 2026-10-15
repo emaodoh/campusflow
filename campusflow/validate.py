@@ -2,7 +2,7 @@ def validate_note_entry(author, message):
     if not author or not message:
         raise ValueError("Author or message cannot be empty.")
 
-    if len(message) < 5 or len(massage) > 200:
+    if len(message) < 5 or len(message) > 200:
         raise ValueError("Message can not be above 200")
 
 

@@ -3,6 +3,9 @@ from .validate import validate_answer
 
 def quiz():
     question_bank = load_question_bank()
+
+    if len(question_bank) == 0:
+        raise ValueError("Question bank is empty")
     score = 0
 
     for question in question_bank:
